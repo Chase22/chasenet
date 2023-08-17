@@ -17,6 +17,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Build zola
+      uses: crowselectromusic/zola-build
+      with:
+        directory: '.'
     # When the dist_dir is ready, deploy it to neocities
     - name: Deploy to neocities
       uses: bcomnes/deploy-to-neocities@v1

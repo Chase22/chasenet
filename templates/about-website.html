@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+    {{ section.title }}
+</h1>
+<p class="subtitle"><strong>Website updates</strong></p>
+<ul>
+    <!-- If you are using pagination, section.pages will be empty. You need to use the paginator object -->
+    {% for page in section.pages %}
+    <li><a href="{{ page.permalink | safe }}">{{ page.date }}: {{ page.title }}</a></li>
+    {% endfor %}
+</ul>
+
+<p class="subtitle"><strong>Technologies and Source</strong></p>
+<p>
+    The website is build using the Zola static site generator. I mostly use it to make writing blog posts easier and allow me to structure the website into individual files.
+    HTML still has no way of including other html without resorting to ugly js solutions or frameworks that load more html at runtime.
+    Zola allows me to have everything structured into nice, reusable files and get it all compiled together before uploading, meaning everything you see is clean simple html.
+</p>
+<p>
+    All the source code can be found on my <a href="https://github.com/Chase22/chasenet" target="_blank">github</a>.
+    I will probably upload snapshots somewhere else in the future in case people don't want to deal with git.
+</p>
+<p>
+    The layout was created using <a href="https://sadgrl.online/projects/layout-builder/" target="_blank">sadgrl's Layout Builder</a>. <br/>
+    I will continue to customize the layout and colors
+</p>
+<p>
+    The used font is <a href="https://www.dafont.com/pixel-operator.font" target="_blank">Pixel Operator</a>
+</p>
+
+<p class="subtitle"><strong>A word on licencing</strong></p>
+<p>
+    The entire Website and its source code is licenced under <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>. Meaning it can be freely used, redistributed, edited or whatever else. <br/>
+    Linking back is appreciated ;)
+</p>
+<p>I will try to use as many CC0 or copyleft assets as i can on the website. But everything that isn't CC0 will be marked with the correct licensing. Make sure to respect the artists/creators wishes</p>
+{% endblock content %}

@@ -2,11 +2,11 @@
 
 @font-face {
     font-family: 'pixel_operator_mono';
-    src: url('PixelOperatorMono-Bold.woff2') format('woff2'),
+    src: url('PixelOperatorMono-Bold.ttf') format('truetype'),
+    url('PixelOperatorMono-Bold.woff2') format('woff2'),
     url('PixelOperatorMono-Bold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
-
 }
 
 
@@ -17,7 +17,7 @@
     url('PixelOperatorMono.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-
+    font-size: medium;
 }
 
 

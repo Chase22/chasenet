@@ -3,16 +3,34 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="fonts/pixel_operator/stylesheet.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/fonts/pixel_operator/stylesheet.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 
-<body>
-<section class="section">
-    <div class="container">
-        {% block content %} {% endblock %}
+<div id="container">
+    <div id="headerArea">
+        <div id="header"></div>
+        <nav id="navbar">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/about-website">About this website</a></li>
+                <li><a href="/about">About me</a></li>
+            </ul>
+        </nav>
     </div>
-</section>
-</body>
 
+    <div id="flex">
+        {% include "sidebar.html" %}
+        <main>
+            {% block content %}
+            {% endblock content %}
+        </main>
+
+    </div>
+    {% include "footer.html" %}
+</div>
+
+
+</body>
 </html>

@@ -8,8 +8,8 @@ compile_sass = false
 build_search_index = true
 
 taxonomies = [
-    {name = "category", feed = true},
-    {name = "tags", feed = true}
+    {name = "category", feed = true, render=true},
+    {name = "tags", feed = true, render = true}
 ]
 
 [markdown]

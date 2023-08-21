@@ -1,5 +1,6 @@
 +++
 title = "Setting up the website"
+authors = ["Chase"]
 [taxonomies]
 category=["website"]
 tags=["web", "development", "zola"]

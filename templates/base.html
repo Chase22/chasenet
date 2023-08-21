@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="/fonts/pixel_operator/stylesheet.css">
     <link rel="stylesheet" href="/styles.css">
+    {% block rss %}
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path="rss.xml", trailing_slash=false) }}">
+    {% endblock %}
 </head>
 
 <div id="container">

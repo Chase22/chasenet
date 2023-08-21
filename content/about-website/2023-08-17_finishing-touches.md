@@ -1,5 +1,6 @@
 +++
 title = "Finishing Touches"
+authors = ["Chase"]
 [taxonomies]
 category=["website"]
 tags=["web", "development", "zola"]

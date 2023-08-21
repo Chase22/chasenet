@@ -1,5 +1,6 @@
 +++
 title = "Finding neocities"
+authors = ["Chase"]
 [taxonomies]
 category=["life"]
 tags=["neocities", "web"]

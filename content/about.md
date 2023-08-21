@@ -1,5 +1,6 @@
 +++
 title = "About Me"
 template = "about.html"
-date=2023-08-17
+[extra]
+last_update=2023-08-17
 +++

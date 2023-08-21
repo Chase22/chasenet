@@ -1,0 +1,7 @@
+{% macro button(name, alt, link) %}
+<a href="{{link}}" target="_blank"><img alt="{{alt}}" src="{{get_url(path='images/buttons/'~name)}}"></a>
+{% endmacro button %}
+
+{% macro buttonNoAlt(name, link) %}
+{{self::button(name=name, alt=name, link=link)}}
+{% endmacro button %}

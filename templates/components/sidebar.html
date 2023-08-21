@@ -1,9 +1,12 @@
 <aside id="sidebar">
     <h2>Hi there!</h2>
     <div id="buttons">
-        <a href="https://sadgrl.online/" target="_blank"><img src="https://sadgrl.online/assets/images/buttons/sadgrlonline.gif"></a>
-        <a href="http://lu.tiny-universes.net/images-gfx/index.html" target="_blank"><img src={{ get_url(path="images/buttons/fuck.png") }}></a>
-        <a href="https://anlucas.neocities.org/GifFiles" target="_blank"><img src={{ get_url(path="images/buttons/wwwbutton.gif") }}></a>
-        <a href="https://yesterweb.org/no-to-web3/" target="_blank"><img style="border:1px solid white;" src="https://yesterweb.org/no-to-web3/img/roly-saynotoweb3.gif"></a>
+        {{ macros::buttonNoAlt(name="sadgrlonline.gif", link="https://sadgrl.online/") }}
+        {{ macros::button(name="fuck.png", alt="parental advice: I say 'fuck' a lot", link="http://lu.tiny-universes.net/images-gfx/index.html") }}
+        {{ macros::button(name="wwwbutton.gif", alt="World wide Web, connecting people since 1991", link="https://anlucas.neocities.org/GifFiles") }}
+        {{ macros::button(name="roly-saynotoweb3.gif", alt="Keep the web free, say no to web3", link="https://yesterweb.org/no-to-web3") }}
+        {{ macros::button(name="site_not_rated.png", alt="web-rating: site is not yet rated", link="http://www.mabsland.com") }}
+        {{ macros::button(name="he_him.png", alt="Creator uses he/him pronouns", link="https://yesterweb.org/graphics/buttons") }}
+        {{ macros::button(name="hosted_neocities.gif", alt="Site is hosted on neocities", link="https://neocities.org/site/chasenet") }}
     </div>
 </aside>

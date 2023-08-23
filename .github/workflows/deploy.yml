@@ -21,7 +21,13 @@ jobs:
       uses: shalzz/zola-deploy-action@v0.17.2
       env:
         BUILD_ONLY: true
-    # When the dist_dir is ready, deploy it to neocities
+    - name: Check dead links
+      uses: urlstechie/urlchecker-action@0.0.34
+      with:
+        subfolder: public
+        force_pass: true
+
+      # When the dist_dir is ready, deploy it to neocities
     - name: Deploy to neocities
       uses: bcomnes/deploy-to-neocities@v1
       with:

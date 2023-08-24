@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script>
+  let started = null
+  let endingTime = null
+
+  function formatDurationInMs(time) {
+    let suffix = "too early"
+    if (time < 0) {
+      suffix = "too late"
+      time = time * -1
+    }
+
+    const formatDate = new Date(time)
+    const ms = formatDate.getMilliseconds()
+    formatDate.setMilliseconds(0)
+    const seconds = formatDate.getSeconds()
+    formatDate.setSeconds(0)
+    const minutes = formatDate.getTime() / 60_000
+
+    return `${minutes} minutes ${seconds} seconds ${ms} milliseconds ${suffix}`
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const resultElement = document.getElementById("tpt_result");
+    const theButton = document.getElementById("the_button");
+    const runtimeSelect = document.getElementById("select_runtime");
+    theButton.disabled = false
+    runtimeSelect.disabled = false
+
+    theButton.onclick = (event) => {
+      if (started === null) {
+        started = Date.now()
+        const runtime = parseInt(runtimeSelect.value)
+        endingTime = Date.now() + runtime
+        event.target.innerText = "Stop"
+        resultElement.innerText = ""
+      } else {
+        resultElement.innerText = `You were ${formatDurationInMs(endingTime - Date.now())}`
+        started = null
+        event.target.innerText = "Start"
+      }
+    }
+  })
+
+</script>
+
+<style>
+    #tpt_wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+{% endblock head %}
+
+{% block content %}
+<h1 class="title">
+    {{ page.title }}
+</h1>
+<p class="subtitle"><strong>Last updated: {{ page.extra.last_update }}</strong></p>
+
+<noscript>
+    <p>
+        Hello dear nojs crowd,
+        while i always strive to make this website nojs friendly and work without javascript,
+        there is no way of implement a little game like this without using javascript.
+    </p>
+    <p>As a little appology, here's a picture of a cat</p>
+    <img style="max-width: 600px" src="/images/CC0_cat.png" alt="picture of a sleeping cat"><br>
+    <a href="https://stocksnap.io/photo/sleeping-cat-HCLLPLCTG9">Photo</a> licenced under
+    <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a> by
+    <a href="https://stocksnap.io/author/kellyishmael">Kelly Ishmael</a>
+</noscript>
+
+{{ page.content | safe }}
+
+<div id="tpt_wrapper">
+    <div>
+        <select id="select_runtime" disabled>
+            <option value="1000">1 seconds</option>
+            <option value="10000" selected>10 seconds</option>
+            <option value="60000">1 minute</option>
+            <option value="300000">5 minutes</option>
+            <option value="600000">10 minutes</option>
+            <option value="3600000">1 hour</option>
+        </select>
+        <button class="btn-large" id="the_button" disabled>Start</button>
+    </div>
+    <span id="tpt_result"></span>
+</div>
+{% endblock content %}

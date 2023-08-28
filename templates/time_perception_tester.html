@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
+<script src="scripts/tpt/tpt-log.js"></script>
 <script>
   let started = null
   let endingTime = null
@@ -27,67 +28,16 @@
     }
   }
 
-  function pad(num) {
-    num = num.toString()
-    while (num.length < 2) {
-      num = "0" + num
-    }
-    return num
-  }
-
   function formatResult(duration) {
     let suffix = duration.negative ? "too late" : "too early"
 
     return `You were ${duration.minutes} minutes ${duration.seconds} seconds ${duration.milliseconds} milliseconds ${suffix}`
   }
 
-  function addDurationToLog(log, runtime, duration) {
-    const div = document.createElement("div")
-    const prefix = duration.negative ? "-" : ""
-
-    div.innerText = `${new Date().toLocaleString()} - ${runtime}: ${prefix}${pad(duration.minutes)}:${pad(duration.seconds)}:${pad(duration.milliseconds)}`
-
-    log.prepend(div)
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
     const resultElement = document.getElementById("tpt_result");
     const theButton = document.getElementById("the_button");
     const runtimeSelect = document.getElementById("select_runtime");
-    const log = document.getElementById("tpt_log")
-    const saveToBrowserCheck = document.getElementById("tpt_keep_log")
-    const saveToBrowserLabel = document.getElementById("tpt_keep_log_label")
-
-    const saveToBrowserLabelError = "Save log to browser (You seem to have blocked prompts, so this checkbox is no longer functional. Please restart your browser)"
-    const saveToBrowserLabelDefault = "Save log to browser"
-
-    saveToBrowserCheck.onchange = (event) => {
-      const startTime = Date.now()
-      if (event.target.checked) {
-        if (confirm("Activating this will save your log to your local browser. This information will never be send to a server")) {
-
-        } else {
-          if (Date.now() - startTime < 10) {
-            saveToBrowserLabel.innerText = saveToBrowserLabelError
-          } else {
-            saveToBrowserLabel.innerText = saveToBrowserLabelDefault
-          }
-          saveToBrowserCheck.checked = false
-        }
-      } else {
-        if (confirm("Deactivating this will delete all logs from your browser. They will be lost once you close this site")) {
-
-        } else {
-          console.log(Date.now() - startTime)
-          if (Date.now() - startTime < 10) {
-            saveToBrowserLabel.innerText = saveToBrowserLabelError
-          } else {
-            saveToBrowserLabel.innerText = saveToBrowserLabelDefault
-          }
-          saveToBrowserCheck.checked = true
-        }
-      }
-    }
 
     theButton.disabled = false
     runtimeSelect.disabled = false
@@ -102,7 +52,7 @@
       } else {
         const result = getDurationFromMs(endingTime - Date.now())
         resultElement.innerText = formatResult(result)
-        addDurationToLog(log, runtimeSelect.selectedOptions.item(0).innerText, result)
+        window.tpt.addDurationToLog(runtimeSelect.selectedOptions.item(0).innerText, result)
         started = null
         event.target.innerText = "Start"
       }
@@ -132,7 +82,7 @@
 <noscript>
     <p>
         Hello dear nojs crowd,
-        while i always strive to make this website nojs friendly and work without javascript,
+        while I always strive to make this website nojs friendly and work without javascript,
         there is no way of implement a little game like this without using javascript.
     </p>
     <p>As a little appology, here's a picture of a cat</p>
@@ -154,12 +104,14 @@
             <option value="600000">10 minutes</option>
             <option value="3600000">1 hour</option>
         </select>
-        <button class="btn-large" id="the_button" disabled>Start</button>
+        <button id="the_button" disabled>Start</button>
     </div>
     <div id="tpt_result"></div>
+    <div id="tpt_save_error"></div>
     <div>
-        <label for="tpt_keep_log" id="tpt_keep_log_label">Save log to browser</label><input id="tpt_keep_log"
-                                                                                            type="checkbox">
+        <label for="tpt_keep_log" id="tpt_keep_log_label">Save log to browser</label>
+        <input id="tpt_keep_log" type="checkbox">
+        <button id="tpt_clear_button">Clear log</button>
     </div>
     <fieldset>
         <legend>Log</legend>

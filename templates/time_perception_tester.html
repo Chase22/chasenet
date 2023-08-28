@@ -5,27 +5,90 @@
   let started = null
   let endingTime = null
 
-  function formatDurationInMs(time) {
-    let suffix = "too early"
+  function getDurationFromMs(time) {
+    let negative = false
     if (time < 0) {
-      suffix = "too late"
       time = time * -1
+      negative = true
     }
 
     const formatDate = new Date(time)
-    const ms = formatDate.getMilliseconds()
+    const milliseconds = formatDate.getMilliseconds()
     formatDate.setMilliseconds(0)
     const seconds = formatDate.getSeconds()
     formatDate.setSeconds(0)
     const minutes = formatDate.getTime() / 60_000
 
-    return `${minutes} minutes ${seconds} seconds ${ms} milliseconds ${suffix}`
+    return {
+      milliseconds: milliseconds,
+      seconds: seconds,
+      minutes: minutes,
+      negative: negative
+    }
+  }
+
+  function pad(num) {
+    num = num.toString()
+    while (num.length < 2) {
+      num = "0" + num
+    }
+    return num
+  }
+
+  function formatResult(duration) {
+    let suffix = duration.negative ? "too late" : "too early"
+
+    return `You were ${duration.minutes} minutes ${duration.seconds} seconds ${duration.milliseconds} milliseconds ${suffix}`
+  }
+
+  function addDurationToLog(log, runtime, duration) {
+    const div = document.createElement("div")
+    const prefix = duration.negative ? "-" : ""
+
+    div.innerText = `${new Date().toLocaleString()} - ${runtime}: ${prefix}${pad(duration.minutes)}:${pad(duration.seconds)}:${pad(duration.milliseconds)}`
+
+    log.prepend(div)
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     const resultElement = document.getElementById("tpt_result");
     const theButton = document.getElementById("the_button");
     const runtimeSelect = document.getElementById("select_runtime");
+    const log = document.getElementById("tpt_log")
+    const saveToBrowserCheck = document.getElementById("tpt_keep_log")
+    const saveToBrowserLabel = document.getElementById("tpt_keep_log_label")
+
+    const saveToBrowserLabelError = "Save log to browser (You seem to have blocked prompts, so this checkbox is no longer functional. Please restart your browser)"
+    const saveToBrowserLabelDefault = "Save log to browser"
+
+    saveToBrowserCheck.onchange = (event) => {
+      const startTime = Date.now()
+      if (event.target.checked) {
+        if (confirm("Activating this will save your log to your local browser. This information will never be send to a server")) {
+
+        } else {
+          if (Date.now() - startTime < 10) {
+            saveToBrowserLabel.innerText = saveToBrowserLabelError
+          } else {
+            saveToBrowserLabel.innerText = saveToBrowserLabelDefault
+          }
+          saveToBrowserCheck.checked = false
+        }
+      } else {
+        if (confirm("Deactivating this will delete all logs from your browser. They will be lost once you close this site")) {
+
+        } else {
+          console.log(Date.now() - startTime)
+          if (Date.now() - startTime < 10) {
+            saveToBrowserLabel.innerText = saveToBrowserLabelError
+          } else {
+            saveToBrowserLabel.innerText = saveToBrowserLabelDefault
+          }
+          saveToBrowserCheck.checked = true
+        }
+      }
+    }
+
     theButton.disabled = false
     runtimeSelect.disabled = false
 
@@ -37,7 +100,9 @@
         event.target.innerText = "Stop"
         resultElement.innerText = ""
       } else {
-        resultElement.innerText = `You were ${formatDurationInMs(endingTime - Date.now())}`
+        const result = getDurationFromMs(endingTime - Date.now())
+        resultElement.innerText = formatResult(result)
+        addDurationToLog(log, runtimeSelect.selectedOptions.item(0).innerText, result)
         started = null
         event.target.innerText = "Start"
       }
@@ -50,6 +115,10 @@
     #tpt_wrapper {
         display: flex;
         flex-direction: column;
+    }
+
+    #tpt_result {
+        height: 40px;
     }
 </style>
 {% endblock head %}
@@ -87,6 +156,14 @@
         </select>
         <button class="btn-large" id="the_button" disabled>Start</button>
     </div>
-    <span id="tpt_result"></span>
+    <div id="tpt_result"></div>
+    <div>
+        <label for="tpt_keep_log" id="tpt_keep_log_label">Save log to browser</label><input id="tpt_keep_log"
+                                                                                            type="checkbox">
+    </div>
+    <fieldset>
+        <legend>Log</legend>
+        <div id="tpt_log"></div>
+    </fieldset>
 </div>
 {% endblock content %}

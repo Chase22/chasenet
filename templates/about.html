@@ -6,5 +6,10 @@
 </h1>
 <p class="subtitle"><strong>Last updated: {{ page.extra.last_update }}</strong></p>
 
-<img src={{ get_url(path="soon.png") }} style="width: 80%">
+<img srcset="
+    images/soon/soon_4x.png 4x,
+    images/soon/soon_3x.png 4x,
+    images/soon/soon_2x.png 2x,
+    images/soon/soon_1x.png 1x
+" style="width: 80%"/>
 {% endblock content %}
